@@ -32,6 +32,8 @@ namespace API
                     Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddCors();
+            services.AddSwaggerGen();
             services.AddControllers();
         }
 
@@ -43,7 +45,18 @@ namespace API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DatingApi V1");
+                c.RoutePrefix = "swagger";
+            });
+
+
 
             app.UseRouting();
 
